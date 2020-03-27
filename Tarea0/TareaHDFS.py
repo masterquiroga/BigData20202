@@ -16,6 +16,8 @@ Copyright [2020] [Pulido Ortega, Israel (oyente)]
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   This work is a derivative from https://github.com/jimmyhm/BigData20202
 """
 
 # In[26]:
