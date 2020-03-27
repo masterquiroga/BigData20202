@@ -61,7 +61,15 @@ def cargar_archivo(client, pathhdfs, local_path):
 
 
 def lista_directorio(client, path):
+    try:
+        insides = client.list(path)
+        print("se listan los archivos en hdfs:/" + path)
+        for content in insides: print("\t" + content)
+        return insides
+    except:
+        print("Ocurrió un error, el cliente o ruta son")
     pass
+
 
 
 # In[42]:
