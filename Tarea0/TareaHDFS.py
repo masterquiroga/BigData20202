@@ -78,11 +78,11 @@ def cargar_archivo(client, pathhdfs, local_path):
     :param local_path --string not null: Local path to file or folder.
     """
     try:
-        upload = client.upload(pathhdfs, local_path, cleanup: True)
+        upload = client.upload(pathhdfs, local_path, overwrite = True,)
         print("archivo subido a hdfs:/" + upload)
         return upload
     except:
-        print("Ocurrió un error, verifica los parámetros")
+        print("Ocurrió un error, verifica el archivo a subir")
 
 
 # In[41]:
@@ -117,13 +117,13 @@ def lectura_HDFS(client, path_archivo, as_json = False):
     :param as_json      --bool: Do you want a JSON deserealization?
     """
     try:
-        read = None
-        if (as_json):
-            with client.read(path_archivo) as reader:
-                read = reader.read()
-        else:
-            with client.read(path_archivo, encoding='utf-8') as reader:
-                read = json.load(reader)
+        read = client.read(path_archivo)
+        #if (as_json):
+        #    with client.read(path_archivo) as reader:
+        #        read = reader.read()
+        #else:
+        #    with client.read(path_archivo, encoding='utf-8') as reader:
+        #        read = json.load(reader)
         print("se leyó el archivo en " + path_archivo)
         return read
     except:
@@ -133,19 +133,36 @@ def lectura_HDFS(client, path_archivo, as_json = False):
 # In[43]:
 
 
-def eliminar_directorio(client,path_hdfs):
-    pass
+def eliminar_directorio(client, path_hdfs):
+    """
+    Remove a file or directory from a client's HDFS.
+
+    :param client       --hdfs.client.InsecureClient not null: A connected HDFS client.
+    :param path_hdfs --string not null: HDFS path.
+    """
+    try:
+        deleted = client.delete(path_hdfs, recursive = True)
+        print("se borró el archivo en" + deleted)
+        return deleted
+    except:
+        print("Ocurrió un error, la ruta existe?")
 
 
 # In[35]:
 
 
 def main():
-    file=getenv('FILE', './data/ola.txt')
-    url=getenv('HDFS_URL', 'http://localhost:9870')
-    dir=getenv('DIR', '/tarea0')
-    client=conexion(url)
-    crear_directorio(client,"/prueba/")
+    filename = getenv('FILENAME', 'ola.txt')
+    datadir = getenv('DATADIR', './data')
+    file = datadir + '/' + filename
+    url = getenv('HDFS_URL', 'http://localhost:50070')
+    dir = getenv('DIR', '/tarea0')
+    client = conexion(url)
+    crear_directorio(client, dir)
+    cargar_archivo(client, dir, file)
+    lista_directorio(client, dir)
+    lectura_HDFS(client, dir + '/' + filename)
+    eliminar_directorio(client, dir)
 
 
 # In[ ]:
