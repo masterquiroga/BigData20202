@@ -3,7 +3,7 @@
 
 # In[26]:
 
-
+from os import getenv
 from hdfs import InsecureClient
 import json
 
@@ -11,7 +11,7 @@ import json
 # In[27]:
 
 
-def conexion(url):
+def conexion(url, user = "hdfs"):
     """
     url --string no null, url del host
     
@@ -19,7 +19,7 @@ def conexion(url):
     
     """
     try:
-        client = InsecureClient(url)
+        client = InsecureClient(url, user)
         return client
     except:
         print("Ocurrio un error favor de verificar la url del host")
@@ -50,21 +50,24 @@ def crear_directorio(client,pathhdfs):
 # In[40]:
 
 
-def cargar_archivo(client,pathhdfs,local_path):
+def cargar_archivo(client, pathhdfs, local_path):
+    """
+
+    """
     pass
 
 
 # In[41]:
 
 
-def lista_directorio(client,path):
+def lista_directorio(client, path):
     pass
 
 
 # In[42]:
 
 
-def lectura_HDFS(cliente,path_archivo):
+def lectura_HDFS(cliente, path_archivo):
     pass
 
 
@@ -79,8 +82,9 @@ def eliminar_directorio(client,path_hdfs):
 
 
 def main():
-    file=''
-    url='http://localhost:9870'
+    file=getenv('FILE', './data/ola.txt')
+    url=getenv('HDFS_URL', 'http://localhost:9870')
+    dir=getenv('DIR', '/tarea0')
     client=conexion(url)
     crear_directorio(client,"/prueba/")
 
