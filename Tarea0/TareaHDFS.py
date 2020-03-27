@@ -89,8 +89,26 @@ def lista_directorio(client, path):
 # In[42]:
 
 
-def lectura_HDFS(cliente, path_archivo):
-    pass
+def lectura_HDFS(client, path_archivo, as_json = False):
+    """
+    Read a file from a client HDFS, directly loading it in memory or attempting JSON deserialization
+
+    :param client       --hdfs.client.InsecureClient not null: A connected HDFS client.
+    :param path_archivo --string not null: HDFS path to a file.
+    :param as_json      --bool: Do you want a JSON deserealization?
+    """
+    try:
+        read = None
+        if (as_json):
+            with client.read(path_archivo) as reader:
+                read = reader.read()
+        else:
+            with client.read(path_archivo, encoding='utf-8') as reader:
+                read = json.load(reader)
+        print("se leyó el archivo en " + path_archivo)
+        return read
+    except:
+        print("Ocurrio un error, el archivo no existe o no es legible.")    
 
 
 # In[43]:
