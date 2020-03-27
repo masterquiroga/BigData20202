@@ -52,9 +52,18 @@ def crear_directorio(client,pathhdfs):
 
 def cargar_archivo(client, pathhdfs, local_path):
     """
-    
+    Uploads a file or directory in a client's HDFS path.
+
+    :param client     --hdfs.client.InsecureClient not null: A connected HDFS client.
+    :param pathhdfs   --string not null: Target HDFS path.
+    :param local_path --string not null: Local path to file or folder.
     """
-    pass
+    try:
+        upload = client.upload(pathhdfs, local_path, cleanup: True)
+        print("archivo subido a hdfs:/" + upload)
+        return upload
+    except:
+        print("Ocurrió un error, verifica los parámetros")
 
 
 # In[41]:
@@ -62,9 +71,10 @@ def cargar_archivo(client, pathhdfs, local_path):
 
 def lista_directorio(client, path):
     """
-    client --hdfs.InsecureClient not null
-    path   --string not null
-    List the path inside the client's HDFS
+    List names of files contained in a client's HDFS path.
+
+    :param client --hdfs.client.InsecureClient not null: A connected HDFS client.
+    :param path   --string not null: Remote path to a directory.
     """
     try:
         insides = client.list(path)
