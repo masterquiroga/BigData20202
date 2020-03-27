@@ -52,7 +52,7 @@ def crear_directorio(client,pathhdfs):
 
 def cargar_archivo(client, pathhdfs, local_path):
     """
-
+    
     """
     pass
 
@@ -61,6 +61,11 @@ def cargar_archivo(client, pathhdfs, local_path):
 
 
 def lista_directorio(client, path):
+    """
+    client --hdfs.InsecureClient not null
+    path   --string not null
+    List the path inside the client's HDFS
+    """
     try:
         insides = client.list(path)
         print("se listan los archivos en hdfs:/" + path)
@@ -68,7 +73,6 @@ def lista_directorio(client, path):
         return insides
     except:
         print("Ocurrió un error, el cliente o ruta son")
-    pass
 
 
 
